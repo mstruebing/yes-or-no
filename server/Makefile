@@ -6,6 +6,9 @@
 # Add node_modules binaries to $PATH
 export PATH := ./node_modules/.bin:$(PATH)
 
+SRC_DIR = src
+SOURCES = $(shell find $(SRC_DIR) -type f -name '*.js')
+
 
 ################################################################################
 # Setup
@@ -16,10 +19,13 @@ check-requirements:
 	@which yarn &>/dev/null || \
 		(echo yarn is not installed: https://github.com/yarnpkg/yarn && false)
 
-install:
+# doesn't work fully as expected (rebuilding)
+node_modules: package.json yarn.lock
 	yarn install
 
-setup: check-requirements install
+install: node_modules
+
+setup: check-requirements install build start
 
 
 ################################################################################
@@ -27,11 +33,14 @@ setup: check-requirements install
 ################################################################################
 
 
-build:
-	@echo TODO
+start: build
+	node dist/index.js
 
-watch:
-	@echo TODO
+# doesn't work fully as expected (rebuilding)
+dist: $(SOURCES)
+	babel src --out-dir dist --source-maps inline --presets=env --ignore test.js
+
+build: dist
 
 build-production:
 	@echo TODO
@@ -43,7 +52,7 @@ build-production:
 
 
 test:
-	@echo TODO
+	jest src
 
 lint: lint-js lint-editorconfig
 
@@ -53,12 +62,5 @@ lint-js:
 lint-editorconfig:
 	editorconfig-checker
 
-
-################################################################################
-# Misc
-################################################################################
-
-
-.PHONY: clean
-clean:
-	rm -Rf node_modules
+lint-fix:
+	xo --fix

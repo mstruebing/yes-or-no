@@ -14,11 +14,17 @@
   },
   "homepage": "https://github.com/mstruebing/yes-or-no#readme",
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^22.4.3",
     "editorconfig-checker": "^1.2.0",
+    "jest": "^22.4.3",
     "node": "^10.0.0",
+    "regenerator-runtime": "^0.11.1",
     "xo": "^0.20.3"
   },
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "express": "^4.16.3"
   }
 }
