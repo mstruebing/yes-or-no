@@ -1,13 +1,11 @@
 import express from 'express';
 
-import sum from './sum';
+import {randomQuestion} from './questions';
 
 const app = express();
 
-console.log(sum(1, 2));
-
 app.get('/', (req, res) => {
-  res.send('Hello World!!!');
+  res.send(randomQuestion());
 });
 
 app.listen(3000);
