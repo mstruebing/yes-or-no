@@ -5,7 +5,7 @@ import {randomQuestion} from './questions';
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send(randomQuestion());
+	res.send(randomQuestion());
 });
 
 app.listen(3000);

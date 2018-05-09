@@ -54,6 +54,9 @@ build-production:
 test:
 	jest src
 
+test-coverage:
+	jest --coverage src
+
 lint: lint-js lint-editorconfig
 
 lint-js:
