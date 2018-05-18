@@ -8,7 +8,7 @@ const questions = [
 	},
 	{
 		id: 1,
-		question: 'Mac oder Linux',
+		question: 'Mac or Linux',
 		answers: ['Mac', 'Linux']
 	},
 	{
