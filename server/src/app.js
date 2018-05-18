@@ -9,7 +9,7 @@ app.get('/', async (req, res) => {
 	res.send(question);
 });
 
-app.get('/countl', async (req, res) => {
+app.get('/count', async (req, res) => {
 	const count = await questionCount();
 	res.send(count);
 });
