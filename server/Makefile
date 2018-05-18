@@ -34,7 +34,7 @@ setup: check-requirements install build start
 
 
 start: build
-	node dist/index.js
+	node index.js
 
 # doesn't work fully as expected (rebuilding)
 dist: $(SOURCES)
