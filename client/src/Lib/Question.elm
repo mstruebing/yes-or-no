@@ -49,10 +49,10 @@ questionDecoder =
         |> required "option2" Decode.string
 
 
-answerEncoder : Answer -> Encode.Value
-answerEncoder answer =
+answerEncoder : Answer -> String -> Encode.Value
+answerEncoder answer userHash =
     let
         attributes =
-            [ ( "id", Encode.int answer.id ), ( "option", Encode.int answer.option ) ]
+            [ ( "id", Encode.int answer.id ), ( "option", Encode.int answer.option ), ( "userHash", Encode.string userHash ) ]
     in
         Encode.object attributes

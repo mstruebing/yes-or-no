@@ -20,12 +20,12 @@ init maybeUserHash =
     case maybeUserHash of
         Just userHash ->
             ( { initialModel | userHash = userHash }
-            , Cmd.batch [ fetchRandomQuestion ]
+            , Cmd.batch [ fetchRandomQuestion userHash ]
             )
 
         Nothing ->
             ( initialModel
-            , Cmd.batch [ fetchRandomQuestion ]
+            , Cmd.none
             )
 
 

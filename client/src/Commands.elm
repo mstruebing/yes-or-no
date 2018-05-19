@@ -6,23 +6,23 @@ import Lib.Question exposing (Question, Answer, randomQuestionsUrl, answerQuesti
 import Types exposing (Msg(..))
 
 
-fetchRandomQuestion : Cmd Msg
-fetchRandomQuestion =
-    Http.get randomQuestionsUrl questionDecoder
+fetchRandomQuestion : String -> Cmd Msg
+fetchRandomQuestion userHash =
+    Http.get (String.append "/" userHash |> String.append randomQuestionsUrl) questionDecoder
         |> RemoteData.sendRequest
         |> Cmd.map OnFetchRandomQuestion
 
 
-answerQuestion : Answer -> Cmd Msg
-answerQuestion answer =
-    answerQuestionRequest answer
+answerQuestion : Answer -> String -> Cmd Msg
+answerQuestion answer userHash =
+    answerQuestionRequest answer userHash
         |> Http.send OnAnswerQuestion
 
 
-answerQuestionRequest : Answer -> Http.Request Question
-answerQuestionRequest answer =
+answerQuestionRequest : Answer -> String -> Http.Request Question
+answerQuestionRequest answer userHash =
     Http.request
-        { body = answerEncoder answer |> Http.jsonBody
+        { body = answerEncoder answer userHash |> Http.jsonBody
         , expect = Http.expectJson questionDecoder
         , headers = []
         , method = "POST"

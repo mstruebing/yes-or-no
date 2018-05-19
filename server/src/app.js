@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import {randomQuestion, questionCount} from './questions';
-import {isUser, calculateHash} from './user';
+import {isUser, addUser} from './user';
 
 const app = express();
 
@@ -23,7 +23,15 @@ const allowCrossDomain = (req, res, next) => {
 app.use(allowCrossDomain);
 app.use(bodyParser.json());
 
-app.get('/random', async (req, res) => {
+app.get('/random/:userHash', async (req, res) => {
+	const {userHash} = req.params;
+	const userExists = await isUser(userHash);
+
+	if (!userExists) {
+        // Bool
+		const added = await addUser(userHash);
+	}
+
 	const question = await randomQuestion();
 	res.send(question);
 });

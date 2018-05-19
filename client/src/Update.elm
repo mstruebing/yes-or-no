@@ -19,4 +19,4 @@ update msg model =
             ( model, Cmd.none )
 
         AnswerQuestion id option ->
-            ( model, Cmd.batch [ answerQuestion { id = id, option = option } ] )
+            ( model, Cmd.batch [ answerQuestion { id = id, option = option } model.userHash ] )
