@@ -1,48 +1,32 @@
 module Main exposing (..)
 
+---- ELM ----
+
 import Html exposing (Html, text, div, h1, img)
 import Html.Attributes exposing (src)
+import Html.Events exposing (onClick)
+import Http
+import RemoteData exposing (WebData)
 
 
----- MODEL ----
+---- OWN ----
+
+import Lib.Question exposing (Question, randomQuestionsUrl, questionDecoder, emptyQuestion)
+import Types exposing (Msg(..), Model, initialModel)
+import Update exposing (update)
+import View exposing (view)
 
 
-type alias Model =
-    {}
+fetchRandomQuestion : Cmd Msg
+fetchRandomQuestion =
+    Http.get randomQuestionsUrl questionDecoder
+        |> RemoteData.sendRequest
+        |> Cmd.map OnFetchRandomQuestion
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
-
-
-
----- UPDATE ----
-
-
-type Msg
-    = NoOp
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    ( model, Cmd.none )
-
-
-
----- VIEW ----
-
-
-view : Model -> Html Msg
-view model =
-    div []
-        [ img [ src "/logo.svg" ] []
-        , h1 [] [ text "Your Elm App is working!" ]
-        ]
-
-
-
----- PROGRAM ----
+    ( initialModel, Cmd.batch [ fetchRandomQuestion ] )
 
 
 main : Program Never Model Msg

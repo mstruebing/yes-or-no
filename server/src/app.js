@@ -1,10 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 
 import {randomQuestion, questionCount} from './questions';
 
 const app = express();
 
-app.get('/', async (req, res) => {
+app.use(cors());
+
+app.get('/random', async (req, res) => {
 	const question = await randomQuestion();
 	res.send(question);
 });
@@ -14,4 +17,6 @@ app.get('/count', async (req, res) => {
 	res.send(count);
 });
 
-app.listen(3000);
+const port = process.env.port || 3001;
+
+app.listen(port);
