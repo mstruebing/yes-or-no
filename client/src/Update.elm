@@ -3,6 +3,7 @@ module Update exposing (update)
 ---- OWN ----
 
 import Types exposing (Model, Msg(..))
+import Commands exposing (answerQuestion)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -13,3 +14,9 @@ update msg model =
 
         OnFetchRandomQuestion response ->
             ( { model | question = response }, Cmd.none )
+
+        OnAnswerQuestion _ ->
+            ( model, Cmd.none )
+
+        AnswerQuestion id option ->
+            ( model, Cmd.batch [ answerQuestion { id = id, option = option } ] )

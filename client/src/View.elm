@@ -4,6 +4,7 @@ module View exposing (view)
 
 import Html exposing (Html, div, text, p)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 import RemoteData exposing (WebData)
 
 
@@ -24,12 +25,12 @@ printQuestion maybeQuestion =
     case maybeQuestion of
         RemoteData.Success question ->
             div [ class "question" ]
-                [ p [ class "option" ]
+                [ p [ class "option", AnswerQuestion question.id 1 |> onClick ]
                     [ text question.option1 ]
                 , p [ class "seperator" ]
                     [ text "or" ]
                 , p
-                    [ class "option" ]
+                    [ class "option", AnswerQuestion question.id 2 |> onClick ]
                     [ text question.option2 ]
                 ]
 

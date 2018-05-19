@@ -2,13 +2,13 @@ module Types exposing (..)
 
 ---- ELM ----
 
-import Http
 import RemoteData exposing (WebData)
+import Http
 
 
 ---- OWN ----
 
-import Lib.Question exposing (Question)
+import Lib.Question exposing (Question, Answer)
 
 
 type alias Model =
@@ -24,3 +24,5 @@ initialModel =
 type Msg
     = NoOp
     | OnFetchRandomQuestion (WebData Question)
+    | OnAnswerQuestion (Result Http.Error Question)
+    | AnswerQuestion Int Int

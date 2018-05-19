@@ -3,13 +3,24 @@ body {
   margin: 0;
   text-align: center;
   color: #293c4b;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  height: 100vh;
 }
 
-h1 {
-  font-size: 30px;
+.question {
+    font-size: 3em;
 }
 
-img {
-  margin: 20px 0;
-  max-width: 200px;
+.question p {
+    display: inline;
+}
+
+.question .seperator {
+    margin: 0 2em;
+}
+
+.question .option {
+    font-weight: 700;
 }
