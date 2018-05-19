@@ -28,5 +28,5 @@ answerQuestionRequest answer =
         , method = "POST"
         , timeout = Nothing
         , url = answerQuestionsUrl
-        , withCredentials = False
+        , withCredentials = True
         }

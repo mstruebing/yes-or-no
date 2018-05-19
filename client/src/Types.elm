@@ -13,12 +13,15 @@ import Lib.Question exposing (Question, Answer)
 
 type alias Model =
     { question : WebData Question
+    , userHash : String
     }
 
 
 initialModel : Model
 initialModel =
-    { question = RemoteData.Loading }
+    { question = RemoteData.Loading
+    , userHash = ""
+    }
 
 
 type Msg

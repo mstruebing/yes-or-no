@@ -1,15 +1,16 @@
 import express from 'express';
-import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import {randomQuestion, questionCount} from './questions';
+import {isUser, calculateHash} from './user';
 
 const app = express();
 
-const allowCrossDomain = function (req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*');
+const allowCrossDomain = (req, res, next) => {
+	res.header('Access-Control-Allow-Origin', 'http://local:3000');
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+	res.header('Access-Control-Allow-Credentials', true);
 
 	// Intercept OPTIONS method
 	if (req.method === 'OPTIONS') {
@@ -19,7 +20,6 @@ const allowCrossDomain = function (req, res, next) {
 	}
 };
 
-app.use(cors());
 app.use(allowCrossDomain);
 app.use(bodyParser.json());
 

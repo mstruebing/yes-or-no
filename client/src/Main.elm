@@ -15,14 +15,23 @@ import Update exposing (update)
 import View exposing (view)
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( initialModel, Cmd.batch [ fetchRandomQuestion ] )
+init : Maybe String -> ( Model, Cmd Msg )
+init maybeUserHash =
+    case maybeUserHash of
+        Just userHash ->
+            ( { initialModel | userHash = userHash }
+            , Cmd.batch [ fetchRandomQuestion ]
+            )
+
+        Nothing ->
+            ( initialModel
+            , Cmd.batch [ fetchRandomQuestion ]
+            )
 
 
-main : Program Never Model Msg
+main : Program (Maybe String) Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { view = view
         , init = init
         , update = update
