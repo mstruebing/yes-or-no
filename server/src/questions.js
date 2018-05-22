@@ -1,8 +1,28 @@
 import {query} from './database';
 
-// use userHash to get all non answered questions:  <22-05-18, mstruebing> //
-const randomQuestion = async userHash => {
-	const result = await query('SELECT * FROM question ORDER BY random() limit 1');
+const getAnsweredQuestionsByUser = async userId => {
+	const userAlreadyAnswered = await query(`SELECT "question_id" FROM answer WHERE "user_id" = ${userId}`);
+
+	return userAlreadyAnswered.rows.reduce((answeredQuestions, question) => {
+		if (!answeredQuestions.includes(question.question_id)) {
+			return [...answeredQuestions, question.question_id];
+		}
+
+		return answeredQuestions;
+	}, []);
+};
+
+// Use userHash to get all non answered questions:  <22-05-18, mstruebing> //
+const randomQuestion = async userId => {
+	const answeredQuestionsByUser = await getAnsweredQuestionsByUser(userId);
+
+	let result;
+	if (answeredQuestionsByUser.length > 0) {
+		result = await query(`SELECT * FROM question WHERE NOT id in (${answeredQuestionsByUser.toString()}) ORDER BY random() limit 1`);
+	} else {
+		result = await query(`SELECT * FROM question ORDER BY random() limit 1`);
+	}
+
 	return result.rows[0];
 };
 

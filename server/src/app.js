@@ -28,25 +28,27 @@ app.get('/random/:userHash', async (req, res) => {
 	const userExists = await isUser(userHash);
 
 	if (!userExists) {
-        // Bool
+		// Bool
 		const added = await addUser(userHash);
-        if (!added) {
-            // Add correct error handling:  <22-05-18, mstruebing> //
-            console.log(`Something went wrong while adding user with ${userHash} into the database`);
-        }
+		if (!added) {
+			// Add correct error handling:  <22-05-18, mstruebing> //
+			console.log(`Something went wrong while adding user with ${userHash} into the database`);
+		}
 
-        console.log(`user with hash: ${userHash} successfully added`);
+		console.log(`user with hash: ${userHash} successfully added`);
 	}
 
-	const question = await randomQuestion(userHash);
+	const userId = await getUserId(userHash);
+
+	const question = await randomQuestion(userId);
 	res.send(question);
 });
 
 app.post('/answer', async (req, res) => {
-    const userId = await getUserId(req.body.userHash);
-    const questionId = req.body.id;
-    const option = req.body.option;
-    const answered = await answerQuestion(questionId, userId, option);
+	const userId = await getUserId(req.body.userHash);
+	const questionId = req.body.id;
+	const {option} = req.body;
+	const answered = await answerQuestion(questionId, userId, option);
 
 	res.send(req.body);
 });

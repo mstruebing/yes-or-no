@@ -17,6 +17,6 @@ const getUserId = async userHash => {
 
 export {
 	addUser,
-    getUserId,
+	getUserId,
 	isUser
 };
