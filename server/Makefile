@@ -33,14 +33,18 @@ setup: check-requirements install build start
 ################################################################################
 
 
-start: build
-	node index.js
+start: 
+	nodemon --watch dist index.js
 
 # doesn't work fully as expected (rebuilding)
 dist: $(SOURCES)
 	babel src --out-dir dist --source-maps inline --presets=env --ignore test.js
 
 build: dist
+
+build-watch:
+	babel src --out-dir dist --source-maps inline --presets=env --ignore test.js --watch
+
 
 build-production:
 	@echo TODO

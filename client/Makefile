@@ -1,0 +1,2 @@
+start:
+	elm-app start
