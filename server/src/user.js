@@ -12,10 +12,11 @@ const isUser = async userHash => {
 
 const getUserId = async userHash => {
 	const result = await query(`SELECT "id" FROM "user" WHERE "hash" = '${userHash}'`);
-	return result.rows[0];
+	return result.rows[0].id;
 };
 
 export {
 	addUser,
+    getUserId,
 	isUser
 };

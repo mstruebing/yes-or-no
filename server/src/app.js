@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import {randomQuestion, questionCount} from './questions';
-import {isUser, addUser} from './user';
+import {randomQuestion, answerQuestion, questionCount} from './questions';
+import {isUser, getUserId, addUser} from './user';
 
 const app = express();
 
@@ -30,14 +30,24 @@ app.get('/random/:userHash', async (req, res) => {
 	if (!userExists) {
         // Bool
 		const added = await addUser(userHash);
+        if (!added) {
+            // Add correct error handling:  <22-05-18, mstruebing> //
+            console.log(`Something went wrong while adding user with ${userHash} into the database`);
+        }
+
+        console.log(`user with hash: ${userHash} successfully added`);
 	}
 
-	const question = await randomQuestion();
+	const question = await randomQuestion(userHash);
 	res.send(question);
 });
 
 app.post('/answer', async (req, res) => {
-	console.log(req.body);
+    const userId = await getUserId(req.body.userHash);
+    const questionId = req.body.id;
+    const option = req.body.option;
+    const answered = await answerQuestion(questionId, userId, option);
+
 	res.send(req.body);
 });
 
