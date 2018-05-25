@@ -39,5 +39,6 @@ const answerQuestion = async (questionId, userId, option) => {
 export {
 	randomQuestion,
 	answerQuestion,
-	questionCount
+	questionCount,
+	getAnsweredQuestionsByUser 
 };

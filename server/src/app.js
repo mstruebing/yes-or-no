@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import {randomQuestion, answerQuestion, questionCount} from './questions';
+import {getAnsweredQuestionsByUser, randomQuestion, answerQuestion, questionCount} from './questions';
 import {isUser, getUserId, addUser} from './user';
 
 const app = express();
@@ -47,8 +47,15 @@ app.get('/random/:userHash', async (req, res) => {
 app.post('/answer', async (req, res) => {
 	const userId = await getUserId(req.body.userHash);
 	const questionId = req.body.id;
+
+	const alreadyAnsweredQuestions = await getAnsweredQuestionsByUser(userId);
+
+	if (alreadyAnsweredQuestions.includes(questionId)) {
+		return;
+	}
+
 	const {option} = req.body;
-	const answered = await answerQuestion(questionId, userId, option);
+	await answerQuestion(questionId, userId, option);
 
 	res.send(req.body);
 });
