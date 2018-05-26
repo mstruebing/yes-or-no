@@ -5,22 +5,55 @@ body {
   color: #293c4b;
   display: flex;
   flex-direction: column; 
-  justify-content: center;
-  height: 100vh;
+  justify-content: flex-start;
+  font-size: 16px;
+  margin-top: 40vh;
+  background-color: #000;
+  font-color: #fff;
+  color: #fff;
 }
 
 .question {
-    font-size: 3em;
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .question p {
     display: inline;
 }
 
-.question .seperator {
-    margin: 0 2em;
+
+.seperator {
+    padding: 0 1rem;
 }
 
 .question .option {
     font-weight: 700;
+}
+
+.statistics {
+    font-size: 1rem;
+    font-weight: normal;
+    color: orange;
+}
+
+.statistics:before {
+    content: ' - ';
+}
+
+@media (min-width: 500px) {
+    .question {
+        flex-direction: row;
+        font-size: 3rem;
+    }
+
+    .question p {
+        display: block;
+    }
+
+    .statistics:before {
+        content: '';
+    }
 }

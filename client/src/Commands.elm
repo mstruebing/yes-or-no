@@ -1,8 +1,20 @@
 module Commands exposing (..)
 
-import RemoteData
 import Http
-import Lib.Question exposing (Question, Answer, randomQuestionsUrl, answerQuestionsUrl, questionDecoder, answerEncoder, emptyQuestion)
+import Lib.Question
+    exposing
+        ( Answer
+        , Question
+        , Statistics
+        , answerEncoder
+        , answerQuestionsUrl
+        , emptyQuestion
+        , questionDecoder
+        , randomQuestionsUrl
+        , statisticsDecoder
+        , statisticsUrl
+        )
+import RemoteData
 import Types exposing (Msg(..))
 
 
@@ -11,6 +23,19 @@ fetchRandomQuestion userHash =
     Http.get (String.append "/" userHash |> String.append randomQuestionsUrl) questionDecoder
         |> RemoteData.sendRequest
         |> Cmd.map OnFetchRandomQuestion
+
+
+fetchStatistics : Int -> String -> Cmd Msg
+fetchStatistics questionId userHash =
+    Http.get
+        (String.append "/" userHash
+            |> String.append (toString questionId)
+            |> String.append "/"
+            |> String.append statisticsUrl
+        )
+        statisticsDecoder
+        |> RemoteData.sendRequest
+        |> Cmd.map OnFetchStatistics
 
 
 answerQuestion : Answer -> String -> Cmd Msg
