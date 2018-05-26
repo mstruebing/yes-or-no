@@ -1,16 +1,10 @@
 module Main exposing (..)
 
----- ELM ----
-
+import Commands exposing (fetchCount, fetchRandomQuestion)
 import Html exposing (Html)
 import Http
 import RemoteData exposing (WebData)
-
-
----- OWN ----
-
-import Commands exposing (fetchRandomQuestion)
-import Types exposing (Msg(..), Model, initialModel)
+import Types exposing (Model, Msg(..), initialModel)
 import Update exposing (update)
 import View exposing (view)
 
@@ -20,7 +14,7 @@ init maybeUserHash =
     case maybeUserHash of
         Just userHash ->
             ( { initialModel | userHash = userHash }
-            , Cmd.batch [ fetchRandomQuestion userHash ]
+            , Cmd.batch [ fetchRandomQuestion userHash, fetchCount ]
             )
 
         Nothing ->

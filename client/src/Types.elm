@@ -1,10 +1,7 @@
 module Types exposing (..)
 
----- ELM ----
----- OWN ----
-
 import Http
-import Lib.Question exposing (Answer, Question, Statistics, emptyStatistic)
+import Lib.Question exposing (Answer, Count, Question, Statistics, emptyQuestion, emptyStatistic)
 import RemoteData exposing (WebData)
 
 
@@ -13,6 +10,8 @@ type alias Model =
     , statistics : WebData Statistics
     , userHash : String
     , answered : Int
+    , count : WebData Count
+    , newQuestion : Question
     }
 
 
@@ -22,6 +21,8 @@ initialModel =
     , userHash = ""
     , statistics = RemoteData.Loading
     , answered = 0
+    , count = RemoteData.Loading
+    , newQuestion = emptyQuestion
     }
 
 
@@ -31,4 +32,7 @@ type Msg
     | OnAnswerQuestion (Result Http.Error Question)
     | AnswerQuestion Int Int
     | OnFetchStatistics (WebData Statistics)
+    | OnFetchCount (WebData Count)
     | FetchRandomQuestion
+    | OnUpdateNewQuestionOptionOne String
+    | OnUpdateNewQuestionOptionTwo String

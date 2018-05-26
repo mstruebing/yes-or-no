@@ -1,19 +1,33 @@
 body {
-  font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
-  margin: 0;
-  text-align: center;
-  color: #293c4b;
-  display: flex;
-  flex-direction: column; 
-  justify-content: flex-start;
-  font-size: 16px;
-  margin-top: 40vh;
-  background-color: #000;
-  font-color: #fff;
-  color: #fff;
+	font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
+	margin: 0;
+	text-align: center;
+	color: #293c4b;
+	display: flex;
+	flex-direction: column; 
+	justify-content: flex-start;
+	font-size: 16px;
+	background-color: #000;
+	font-color: #fff;
+	color: #fff;
+}
+
+.app {
+}
+
+.addQuestion {
+	display: flex; 
+	justify-content: center;
+}
+
+.addQuestion form {
+	display: flex;
+	flex-direction: column;
+	width: 200px;
 }
 
 .question {
+	margin-top: 35vh;
     font-size: 2rem;
     display: flex;
     flex-direction: column;
@@ -33,13 +47,13 @@ body {
     font-weight: 700;
 }
 
-.statistics {
+.question .statistics {
     font-size: 1rem;
     font-weight: normal;
     color: orange;
 }
 
-.statistics:before {
+.question .statistics:before {
     content: ' - ';
 }
 
@@ -53,7 +67,7 @@ body {
         display: block;
     }
 
-    .statistics:before {
+    .question .statistics:before {
         content: '';
     }
 }

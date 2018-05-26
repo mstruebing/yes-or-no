@@ -1,9 +1,6 @@
 module Update exposing (update)
 
----- OWN ----
-
-import Commands exposing (answerQuestion, fetchRandomQuestion, fetchStatistics)
-import RemoteData
+import Commands exposing (answerQuestion, fetchCount, fetchRandomQuestion, fetchStatistics)
 import Types exposing (Model, Msg(..))
 
 
@@ -15,30 +12,55 @@ update msg model =
 
         FetchRandomQuestion ->
             ( model
-            , case model.question of
-                RemoteData.Success currentQuestion ->
-                    case model.statistics of
-                        RemoteData.Success currentStatistics ->
-                            if currentQuestion.id == currentStatistics.id then
-                                Cmd.batch [ fetchRandomQuestion model.userHash ]
-                            else
-                                Cmd.none
-
-                        _ ->
-                            Cmd.none
-
-                _ ->
-                    Cmd.none
+            , Cmd.batch
+                [ fetchRandomQuestion model.userHash ]
             )
 
         OnFetchRandomQuestion response ->
-            ( { model | question = response }, Cmd.none )
+            ( { model | question = response }
+            , Cmd.none
+            )
 
         OnFetchStatistics response ->
-            ( { model | statistics = response }, Cmd.none )
+            ( { model | statistics = response }
+            , Cmd.none
+            )
+
+        OnFetchCount response ->
+            ( { model | count = response }
+            , Cmd.none
+            )
 
         OnAnswerQuestion _ ->
-            ( model, Cmd.none )
+            ( model
+            , Cmd.none
+            )
 
         AnswerQuestion id option ->
-            ( { model | answered = option }, Cmd.batch [ answerQuestion { id = id, option = option } model.userHash, fetchStatistics id model.userHash ] )
+            ( { model | answered = option }
+            , Cmd.batch
+                [ answerQuestion { id = id, option = option } model.userHash
+                , fetchStatistics id model.userHash
+                , fetchCount
+                ]
+            )
+
+        OnUpdateNewQuestionOptionOne input ->
+            let
+                oldQuestion =
+                    model.newQuestion
+
+                newQuestion =
+                    { oldQuestion | option1 = input }
+            in
+            ( { model | newQuestion = newQuestion }, Cmd.none )
+
+        OnUpdateNewQuestionOptionTwo input ->
+            let
+                oldQuestion =
+                    model.newQuestion
+
+                newQuestion =
+                    { oldQuestion | option2 = input }
+            in
+            ( { model | newQuestion = newQuestion }, Cmd.none )

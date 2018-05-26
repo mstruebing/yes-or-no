@@ -1,12 +1,9 @@
 module View exposing (view)
 
----- ELM -----
----- OWN ----
-
-import Html exposing (Html, div, p, text)
-import Html.Attributes exposing (class)
-import Html.Events exposing (onClick)
-import Lib.Question exposing (Question, Statistics)
+import Html exposing (Html, button, div, form, input, p, text)
+import Html.Attributes exposing (class, placeholder, type_)
+import Html.Events exposing (onClick, onInput, onSubmit)
+import Lib.Question exposing (Count, Question, Statistics)
 import RemoteData exposing (WebData)
 import Types exposing (Model, Msg(..))
 
@@ -14,12 +11,35 @@ import Types exposing (Model, Msg(..))
 view : Model -> Html Msg
 view model =
     div [ class "app", onClick FetchRandomQuestion ]
-        [ printQuestion model.question model.statistics model.answered
+        [ printStatistics model.count
+        , printAddQuestionForm
+        , printQuestion model.question model.statistics model.answered
         ]
 
 
-shouldPrintStatistics : WebData Question -> WebData Statistics -> Bool
-shouldPrintStatistics maybeQuestion maybeStatistics =
+printStatistics : WebData Count -> Html Msg
+printStatistics maybeCount =
+    case maybeCount of
+        RemoteData.Success count ->
+            div [ class "statistics" ] [ text <| "users: " ++ toString count.users ++ " - questions: " ++ toString count.questions ++ " - answers: " ++ toString count.answers ]
+
+        _ ->
+            text "Loading ..."
+
+
+printAddQuestionForm : Html Msg
+printAddQuestionForm =
+    div [ class "addQuestion" ]
+        [ form [ onSubmit NoOp ]
+            [ input [ onInput OnUpdateNewQuestionOptionOne, placeholder "First option" ] []
+            , input [ onInput OnUpdateNewQuestionOptionTwo, placeholder "Second option" ] []
+            , button [ type_ "submit" ] [ text "submit" ]
+            ]
+        ]
+
+
+shouldPrintQuestionStatistics : WebData Question -> WebData Statistics -> Bool
+shouldPrintQuestionStatistics maybeQuestion maybeStatistics =
     case maybeQuestion of
         RemoteData.Success question ->
             case maybeStatistics of
@@ -33,12 +53,8 @@ shouldPrintStatistics maybeQuestion maybeStatistics =
             False
 
 
-
--- this is hacky as hell and should be refactored asap
-
-
-printStatistics : Int -> Int -> Int -> Int -> Html Msg
-printStatistics option1 option2 answered target =
+printQuestionStatistics : Int -> Int -> Int -> Int -> Html Msg
+printQuestionStatistics option1 option2 answered target =
     if target == 1 then
         toString
             (if answered == 1 then
@@ -88,11 +104,11 @@ printQuestion maybeQuestion maybeStatistics answered =
             div [ class "question" ]
                 [ p [ class "option", AnswerQuestion question.id 1 |> onClick ]
                     [ text question.option1
-                    , if shouldPrintStatistics maybeQuestion maybeStatistics then
+                    , if shouldPrintQuestionStatistics maybeQuestion maybeStatistics then
                         p [ class "statistics" ]
                             [ case maybeStatistics of
                                 RemoteData.Success statistics ->
-                                    printStatistics statistics.option1 statistics.option2 answered 1
+                                    printQuestionStatistics statistics.option1 statistics.option2 answered 1
 
                                 _ ->
                                     text ""
@@ -102,7 +118,7 @@ printQuestion maybeQuestion maybeStatistics answered =
                     ]
                 , p [ class "seperator" ]
                     [ text "or"
-                    , if shouldPrintStatistics maybeQuestion maybeStatistics then
+                    , if shouldPrintQuestionStatistics maybeQuestion maybeStatistics then
                         p [ class "statistics" ]
                             [ case maybeStatistics of
                                 RemoteData.Success statistics ->
@@ -121,11 +137,11 @@ printQuestion maybeQuestion maybeStatistics answered =
                 , p
                     [ class "option", AnswerQuestion question.id 2 |> onClick ]
                     [ text question.option2
-                    , if shouldPrintStatistics maybeQuestion maybeStatistics then
+                    , if shouldPrintQuestionStatistics maybeQuestion maybeStatistics then
                         p [ class "statistics" ]
                             [ case maybeStatistics of
                                 RemoteData.Success statistics ->
-                                    printStatistics statistics.option1 statistics.option2 answered 2
+                                    printQuestionStatistics statistics.option1 statistics.option2 answered 2
 
                                 _ ->
                                     text ""

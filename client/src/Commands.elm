@@ -8,6 +8,8 @@ import Lib.Question
         , Statistics
         , answerEncoder
         , answerQuestionsUrl
+        , countDecoder
+        , countUrl
         , emptyQuestion
         , questionDecoder
         , randomQuestionsUrl
@@ -23,6 +25,13 @@ fetchRandomQuestion userHash =
     Http.get (String.append "/" userHash |> String.append randomQuestionsUrl) questionDecoder
         |> RemoteData.sendRequest
         |> Cmd.map OnFetchRandomQuestion
+
+
+fetchCount : Cmd Msg
+fetchCount =
+    Http.get countUrl countDecoder
+        |> RemoteData.sendRequest
+        |> Cmd.map OnFetchCount
 
 
 fetchStatistics : Int -> String -> Cmd Msg

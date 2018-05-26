@@ -1,13 +1,8 @@
 module Lib.Question exposing (..)
 
----- ELM ----
-
 import Json.Decode as Decode
 import Json.Decode.Pipeline exposing (decode, required)
 import Json.Encode as Encode
-
-
----- OWN ----
 
 
 type alias Question =
@@ -27,6 +22,13 @@ type alias Statistics =
     { id : Int
     , option1 : Int
     , option2 : Int
+    }
+
+
+type alias Count =
+    { answers : Int
+    , questions : Int
+    , users : Int
     }
 
 
@@ -56,6 +58,11 @@ statisticsUrl =
     "http://localhost:3001/statistics"
 
 
+countUrl : String
+countUrl =
+    "http://localhost:3001/count"
+
+
 answerQuestionsUrl : String
 answerQuestionsUrl =
     "http://localhost:3001/answer"
@@ -75,6 +82,14 @@ statisticsDecoder =
         |> required "id" Decode.int
         |> required "option1" Decode.int
         |> required "option2" Decode.int
+
+
+countDecoder : Decode.Decoder Count
+countDecoder =
+    decode Count
+        |> required "answers" Decode.int
+        |> required "questions" Decode.int
+        |> required "users" Decode.int
 
 
 answerEncoder : Answer -> String -> Encode.Value
