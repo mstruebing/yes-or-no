@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import {getAnsweredQuestionsByUser, randomQuestion, answerQuestion, questionCount} from './questions';
+import {getAnsweredQuestionsByUser, quesitonStatistics , userAnsweredQuestion, randomQuestion, answerQuestion, questionCount} from './questions';
 import {isUser, getUserId, addUser} from './user';
 
 const app = express();
@@ -58,6 +58,20 @@ app.post('/answer', async (req, res) => {
 	await answerQuestion(questionId, userId, option);
 
 	res.send(req.body);
+});
+
+app.get('/statistics/:questionId/:userHash', async (req, res) => {
+	const {questionId, userHash} = req.params;
+	const userId = await getUserId(userHash);
+	const answered = await userAnsweredQuestion(questionId, userId);
+
+	if (!answered) {
+		// send question
+	}
+
+	// send statistics
+	const stuff = await quesitonStatistics (questionId);
+	res.send(stuff);
 });
 
 app.get('/count', async (req, res) => {

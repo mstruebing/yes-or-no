@@ -36,9 +36,27 @@ const answerQuestion = async (questionId, userId, option) => {
 	return result.rowCount === 1;
 };
 
+const userAnsweredQuestion = async (questionId, userId) => {
+	const answeredQuestions = await getAnsweredQuestionsByUser(userId);
+	return answeredQuestions.includes(questionId);
+};
+
+const quesitonStatistics = async (questionId) => {
+	const result = await query(`SELECT "answer" FROM "answer" WHERE "question_id" = ${questionId}`);
+	return result.rows.reduce((acc, curr) => {
+		if (curr.answer == 1) {
+			return {option1: acc.option1 + 1, option2: acc.option2};
+		}
+
+		return {option1: acc.option1, option2: acc.option2 + 1};
+	}, {option1: 0, option2: 0});
+};
+
 export {
 	randomQuestion,
 	answerQuestion,
 	questionCount,
-	getAnsweredQuestionsByUser 
+	getAnsweredQuestionsByUser,
+	userAnsweredQuestion,
+	quesitonStatistics
 };
