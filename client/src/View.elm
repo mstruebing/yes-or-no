@@ -10,7 +10,23 @@ import Types exposing (Model, Msg(..))
 
 view : Model -> Html Msg
 view model =
-    div [ class "app", onClick FetchRandomQuestion ]
+    div
+        [ class "app"
+        , case model.question of
+            RemoteData.Success currentQuestion ->
+                case model.statistics of
+                    RemoteData.Success currentStatistics ->
+                        if currentStatistics.id == currentQuestion.id then
+                            onClick FetchRandomQuestion
+                        else
+                            onClick NoOp
+
+                    _ ->
+                        onClick NoOp
+
+            _ ->
+                onClick NoOp
+        ]
         [ printStatistics model.count
         , printAddQuestionForm
         , printQuestion model.question model.statistics model.answered
