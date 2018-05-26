@@ -26,9 +26,10 @@ const randomQuestion = async userId => {
 	return result.rows[0];
 };
 
-const questionCount = async () => {
-	const result = await query('SELECT COUNT (*) FROM question');
-	return result.rows[0];
+const getCounts = async () => {
+	const questions = await query('SELECT COUNT (*) FROM question');
+	const answers = await query('SELECT COUNT (*) FROM answer');
+	return {answers: Number(answers.rows[0].count), questions: Number(questions.rows[0].count)};
 };
 
 const answerQuestion = async (questionId, userId, option) => {
@@ -55,7 +56,7 @@ const quesitonStatistics = async questionId => {
 export {
 	randomQuestion,
 	answerQuestion,
-	questionCount,
+	getCounts,
 	getAnsweredQuestionsByUser,
 	userAnsweredQuestion,
 	quesitonStatistics

@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import {getAnsweredQuestionsByUser, quesitonStatistics , userAnsweredQuestion, randomQuestion, answerQuestion, questionCount} from './questions';
+import {getAnsweredQuestionsByUser, quesitonStatistics, getCounts, randomQuestion, answerQuestion, questionCount} from './questions';
 import {isUser, getUserId, addUser} from './user';
 
 const app = express();
@@ -69,7 +69,8 @@ app.get('/statistics/:questionId/:userHash', async (req, res) => {
 });
 
 app.get('/count', async (req, res) => {
-	const count = await questionCount();
+	const count = await getCounts();
+	console.log( count );
 	res.send(count);
 });
 
