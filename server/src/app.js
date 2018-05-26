@@ -70,7 +70,6 @@ app.get('/statistics/:questionId/:userHash', async (req, res) => {
 
 app.get('/count', async (req, res) => {
 	const count = await getCounts();
-	console.log( count );
 	res.send(count);
 });
 

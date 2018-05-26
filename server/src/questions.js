@@ -27,9 +27,15 @@ const randomQuestion = async userId => {
 };
 
 const getCounts = async () => {
-	const questions = await query('SELECT COUNT (*) FROM question');
-	const answers = await query('SELECT COUNT (*) FROM answer');
-	return {answers: Number(answers.rows[0].count), questions: Number(questions.rows[0].count)};
+	const questions = await query('SELECT COUNT (*) FROM "question"');
+	const answers = await query('SELECT COUNT (*) FROM "answer"');
+	const users = await query('SELECT COUNT (*) FROM "user"');
+
+	return {
+		answers: Number(answers.rows[0].count),
+		questions: Number(questions.rows[0].count),
+		users: Number(users.rows[0].count)
+	};
 };
 
 const answerQuestion = async (questionId, userId, option) => {
