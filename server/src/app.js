@@ -62,16 +62,10 @@ app.post('/answer', async (req, res) => {
 
 app.get('/statistics/:questionId/:userHash', async (req, res) => {
 	const {questionId, userHash} = req.params;
-	const userId = await getUserId(userHash);
-	const answered = await userAnsweredQuestion(questionId, userId);
 
-	if (!answered) {
-		// send question
-	}
-
-	// send statistics
-	const stuff = await quesitonStatistics (questionId);
-	res.send(stuff);
+	// Only send statistics when answered:  <26-05-18, mstruebing> //
+	const statistics = await quesitonStatistics(questionId);
+	res.send(statistics);
 });
 
 app.get('/count', async (req, res) => {
