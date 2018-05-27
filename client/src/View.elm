@@ -28,6 +28,7 @@ view model =
                 onClick NoOp
         ]
         [ printStatistics model.count
+        , printMessage model.message
         , printAddQuestionForm
         , printQuestion model.question model.statistics model.answered
         ]
@@ -46,12 +47,22 @@ printStatistics maybeCount =
 printAddQuestionForm : Html Msg
 printAddQuestionForm =
     div [ class "addQuestion" ]
-        [ form [ onSubmit AddNewQuestion ]
+        [ p [] [ text "Add your own question!" ]
+        , form [ onSubmit AddNewQuestion ]
             [ input [ onInput OnUpdateNewQuestionOptionOne, placeholder "First option" ] []
+            , p [ class "seperator" ] [ text "or" ]
             , input [ onInput OnUpdateNewQuestionOptionTwo, placeholder "Second option" ] []
             , button [ type_ "submit" ] [ text "submit" ]
             ]
         ]
+
+
+printMessage : String -> Html Msg
+printMessage message =
+    if String.isEmpty message then
+        text ""
+    else
+        div [ class "message", onClick ClearMessage ] [ text message ]
 
 
 shouldPrintQuestionStatistics : WebData Question -> WebData Statistics -> Bool

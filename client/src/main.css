@@ -15,19 +15,64 @@ body {
 .app {
 }
 
+.message {
+    margin-top: 30px;
+    background-color: tomato;
+    display: inline-block;
+    padding: 1em;
+    cursor: pointer;
+}
+
+.message:after {
+    content: ' (click to close)';
+}
+
 .addQuestion {
 	display: flex; 
+    flex-direction: column;
 	justify-content: center;
+    position: relative;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.addQuestion > p {
+    color: yellow;
+    display: inline;
+}
+
+.addQuestion .seperator {
+    margin: 0;
+}
+
+.addQuestion:hover > form {
+    display: flex;
+    z-index: 3;
+    position: absolute;
+    top: 5vh;
 }
 
 .addQuestion form {
-	display: flex;
+    display: none;
 	flex-direction: column;
+    justify-content: row;
+    margin: 0 auto;
 	width: 200px;
+    background-color: grey;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+.addQuestion form button {
+    margin-top: 1em;
+    padding: 5px 0;
+    background-color: orange;
+    border: none;
+    cursor: pointer;
 }
 
 .question {
-	margin-top: 35vh;
+	margin-top: 25vh;
     font-size: 2rem;
     display: flex;
     flex-direction: column;
@@ -61,6 +106,7 @@ body {
     .question {
         flex-direction: row;
         font-size: 3rem;
+        margin-top: 35vh;
     }
 
     .question p {

@@ -11,6 +11,11 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
+        ClearMessage ->
+            ( { model | message = "" }
+            , Cmd.none
+            )
+
         FetchRandomQuestion ->
             ( model
             , Cmd.batch

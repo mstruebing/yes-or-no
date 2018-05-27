@@ -40,3 +40,4 @@ type Msg
     | OnUpdateNewQuestionOptionTwo String
     | AddNewQuestion
     | OnAddNewQuestion (Result Http.Error Question)
+    | ClearMessage
