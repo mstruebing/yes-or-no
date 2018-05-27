@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import {getAnsweredQuestionsByUser, quesitonStatistics, getCounts, randomQuestion, answerQuestion, questionCount} from './questions';
+import {getAnsweredQuestionsByUser, quesitonStatistics, getCounts, randomQuestion, answerQuestion} from './questions';
 import {isUser, getUserId, addUser} from './user';
 
 const app = express();
@@ -28,19 +28,17 @@ app.get('/random/:userHash', async (req, res) => {
 	const userExists = await isUser(userHash);
 
 	if (!userExists) {
-		// Bool
 		const added = await addUser(userHash);
-		if (!added) {
-			// Add correct error handling:  <22-05-18, mstruebing> //
+		if (added) {
+			console.log(`user with hash: ${userHash} successfully added`);
+		} else {
 			console.log(`Something went wrong while adding user with ${userHash} into the database`);
 		}
-
-		console.log(`user with hash: ${userHash} successfully added`);
 	}
 
 	const userId = await getUserId(userHash);
-
 	const question = await randomQuestion(userId);
+
 	res.send(question);
 });
 
@@ -61,9 +59,7 @@ app.post('/answer', async (req, res) => {
 });
 
 app.get('/statistics/:questionId/:userHash', async (req, res) => {
-	const {questionId, userHash} = req.params;
-
-	// Only send statistics when answered:  <26-05-18, mstruebing> //
+	const {questionId} = req.params;
 	const statistics = await quesitonStatistics(questionId);
 	res.send(statistics);
 });

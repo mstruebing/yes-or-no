@@ -1,6 +1,7 @@
 import {Client} from 'pg';
 
-async function query(query) {
+
+const query = async (text, values = null) => {
 	const client = new Client({
 		user: 'docker',
 		host: 'localhost',
@@ -10,10 +11,23 @@ async function query(query) {
 	});
 
 	client.connect();
-	const res = await client.query(query);
-	client.end();
 
-	return res;
-}
+	try {
+		let result;
+		if (values === null) {
+			result = await client.query(text);
+		} else {
+			result = await client.query(text, values);
+		}
 
-export {query};
+		return result;
+	} catch (e) {
+		console.log(e.stack);
+	} finally {
+		client.end();
+	}
+};
+
+export {
+	query
+};
