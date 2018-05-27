@@ -1,6 +1,5 @@
 import {Pool} from 'pg';
 
-
 const query = async (text, values = null) => {
 	const pool = new Pool({
 		user: 'docker',

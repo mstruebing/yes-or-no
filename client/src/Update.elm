@@ -1,6 +1,7 @@
 module Update exposing (update)
 
-import Commands exposing (answerQuestion, fetchCount, fetchRandomQuestion, fetchStatistics)
+import Commands exposing (addNewQuestion, answerQuestion, fetchCount, fetchRandomQuestion, fetchStatistics)
+import Lib.Question exposing (emptyQuestion)
 import Types exposing (Model, Msg(..))
 
 
@@ -37,12 +38,27 @@ update msg model =
             )
 
         AnswerQuestion id option ->
-            ( { model | answered = option }
+            ( model
             , Cmd.batch
                 [ answerQuestion { id = id, option = option } model.userHash
                 , fetchStatistics id model.userHash
                 , fetchCount
                 ]
+            )
+
+        AddNewQuestion ->
+            ( model
+            , Cmd.batch [ addNewQuestion model.newQuestion ]
+            )
+
+        OnAddNewQuestion (Ok result) ->
+            ( { model | newQuestion = emptyQuestion }
+            , Cmd.none
+            )
+
+        OnAddNewQuestion (Err err) ->
+            ( { model | message = "Question already in database" }
+            , Cmd.none
             )
 
         OnUpdateNewQuestionOptionOne input ->

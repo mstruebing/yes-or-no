@@ -93,7 +93,32 @@ const quesitonStatistics = async questionId => {
 	}
 };
 
+const addQuestion = async ({option1, option2}) => {
+	let sql = `SELECT COUNT(*) FROM "question" WHERE ("option1" ILIKE $1 AND "option2" ILIKE $2) OR ("option1" ILIKE $3 AND "option2" ILIKE $4)`;
+	let values = [option1, option2, option2, option1];
+
+	try {
+		let result = await query(sql, values);
+		const alreadyInDb = result.rows[0].count > 0;
+
+		if (alreadyInDb) {
+			return false;
+		}
+
+		sql = 'INSERT INTO "question" ("option1", "option2") VALUES ($1, $2)';
+		values = [option1, option2];
+
+		result = await query(sql, values);
+	} catch (e) {
+		console.log(e.stack);
+		return false;
+	}
+
+	return true;
+};
+
 export {
+	addQuestion,
 	randomQuestion,
 	answerQuestion,
 	getCounts,

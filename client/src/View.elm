@@ -46,7 +46,7 @@ printStatistics maybeCount =
 printAddQuestionForm : Html Msg
 printAddQuestionForm =
     div [ class "addQuestion" ]
-        [ form [ onSubmit NoOp ]
+        [ form [ onSubmit AddNewQuestion ]
             [ input [ onInput OnUpdateNewQuestionOptionOne, placeholder "First option" ] []
             , input [ onInput OnUpdateNewQuestionOptionTwo, placeholder "Second option" ] []
             , button [ type_ "submit" ] [ text "submit" ]

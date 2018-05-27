@@ -11,7 +11,9 @@ import Lib.Question
         , countDecoder
         , countUrl
         , emptyQuestion
+        , newQuestionsUrl
         , questionDecoder
+        , questionEncoder
         , randomQuestionsUrl
         , statisticsDecoder
         , statisticsUrl
@@ -62,5 +64,24 @@ answerQuestionRequest answer userHash =
         , method = "POST"
         , timeout = Nothing
         , url = answerQuestionsUrl
+        , withCredentials = True
+        }
+
+
+addNewQuestion : Question -> Cmd Msg
+addNewQuestion question =
+    addNewQuestionRequest question
+        |> Http.send OnAddNewQuestion
+
+
+addNewQuestionRequest : Question -> Http.Request Question
+addNewQuestionRequest question =
+    Http.request
+        { body = questionEncoder question |> Http.jsonBody
+        , expect = Http.expectJson questionDecoder
+        , headers = []
+        , method = "POST"
+        , timeout = Nothing
+        , url = newQuestionsUrl
         , withCredentials = True
         }

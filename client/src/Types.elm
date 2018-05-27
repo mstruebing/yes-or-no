@@ -12,6 +12,7 @@ type alias Model =
     , answered : Int
     , count : WebData Count
     , newQuestion : Question
+    , message : String
     }
 
 
@@ -23,6 +24,7 @@ initialModel =
     , answered = 0
     , count = RemoteData.Loading
     , newQuestion = emptyQuestion
+    , message = ""
     }
 
 
@@ -36,3 +38,5 @@ type Msg
     | FetchRandomQuestion
     | OnUpdateNewQuestionOptionOne String
     | OnUpdateNewQuestionOptionTwo String
+    | AddNewQuestion
+    | OnAddNewQuestion (Result Http.Error Question)

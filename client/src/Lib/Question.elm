@@ -40,6 +40,11 @@ emptyQuestion =
     }
 
 
+baseUrl : String
+baseUrl =
+    "http://localhost:3001"
+
+
 emptyStatistic : Statistics
 emptyStatistic =
     { id = 0
@@ -50,22 +55,27 @@ emptyStatistic =
 
 randomQuestionsUrl : String
 randomQuestionsUrl =
-    "http://localhost:3001/random"
+    String.append baseUrl "/random"
 
 
 statisticsUrl : String
 statisticsUrl =
-    "http://localhost:3001/statistics"
+    String.append baseUrl "/statistics"
 
 
 countUrl : String
 countUrl =
-    "http://localhost:3001/count"
+    String.append baseUrl "/count"
 
 
 answerQuestionsUrl : String
 answerQuestionsUrl =
-    "http://localhost:3001/answer"
+    String.append baseUrl "/answer"
+
+
+newQuestionsUrl : String
+newQuestionsUrl =
+    String.append baseUrl "/addQuestion"
 
 
 questionDecoder : Decode.Decoder Question
@@ -74,6 +84,15 @@ questionDecoder =
         |> required "id" Decode.int
         |> required "option1" Decode.string
         |> required "option2" Decode.string
+
+
+questionEncoder : Question -> Encode.Value
+questionEncoder question =
+    let
+        attributes =
+            [ ( "id", Encode.int question.id ), ( "option1", Encode.string question.option1 ), ( "option2", Encode.string question.option2 ) ]
+    in
+    Encode.object attributes
 
 
 statisticsDecoder : Decode.Decoder Statistics
