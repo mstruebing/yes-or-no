@@ -25,10 +25,10 @@ const randomQuestion = async userId => {
 
 		let result;
 		if (answeredQuestionsByUser.length > 0) {
-			const sql = `SELECT * FROM question WHERE NOT id IN (${answeredQuestionsByUser}) AND "hidden" = false limit 1`;
+			const sql = `SELECT * FROM question WHERE NOT id IN (${answeredQuestionsByUser}) AND NOT "hidden" limit 1`;
 			result = await query(sql);
 		} else {
-			const sql = 'SELECT * FROM question ORDER BY random() limit 1';
+			const sql = 'SELECT * FROM question WHERE NOT "hidden" ORDER BY random() limit 1';
 			result = await query(sql);
 		}
 
@@ -40,7 +40,7 @@ const randomQuestion = async userId => {
 
 const getCounts = async () => {
 	try {
-		const questions = await query('SELECT COUNT (*) FROM "question" WHERE "hidden" = false');
+		const questions = await query('SELECT COUNT (*) FROM "question" WHERE NOT "hidden"');
 		const answers = await query('SELECT COUNT (*) FROM "answer"');
 		const users = await query('SELECT COUNT (*) FROM "user"');
 
