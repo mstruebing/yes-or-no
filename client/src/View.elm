@@ -1,7 +1,7 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, form, input, p, text)
-import Html.Attributes exposing (class, placeholder, type_)
+import Html exposing (Html, a, button, div, form, input, p, text)
+import Html.Attributes exposing (class, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Lib.Question exposing (Count, Question, Statistics)
 import RemoteData exposing (WebData)
@@ -29,9 +29,18 @@ view model =
         ]
         [ printStatistics model.count
         , printMessage model.message
-        , printAddQuestionForm
+        , printAddQuestionForm model.newQuestion.option1 model.newQuestion.option2
         , printQuestion model.question model.statistics model.answered
+        , printClickNote model.answered
         ]
+
+
+printClickNote : Int -> Html Msg
+printClickNote answered =
+    if answered /= 0 then
+        p [ class "clickNote" ] [ text "Click anywhere to continue" ]
+    else
+        text ""
 
 
 printStatistics : WebData Count -> Html Msg
@@ -44,14 +53,14 @@ printStatistics maybeCount =
             text "Loading ..."
 
 
-printAddQuestionForm : Html Msg
-printAddQuestionForm =
+printAddQuestionForm : String -> String -> Html Msg
+printAddQuestionForm firstOption secondOption =
     div [ class "addQuestion" ]
         [ p [] [ text "Add your own question!" ]
         , form [ onSubmit AddNewQuestion ]
-            [ input [ onInput OnUpdateNewQuestionOptionOne, placeholder "First option" ] []
+            [ input [ value firstOption, onInput OnUpdateNewQuestionOptionOne, placeholder "First option" ] []
             , p [ class "seperator" ] [ text "or" ]
-            , input [ onInput OnUpdateNewQuestionOptionTwo, placeholder "Second option" ] []
+            , input [ value secondOption, onInput OnUpdateNewQuestionOptionTwo, placeholder "Second option" ] []
             , button [ type_ "submit" ] [ text "submit" ]
             ]
         ]
@@ -93,7 +102,7 @@ printQuestionStatistics option1 option2 answered target =
             |> String.append
                 (toString
                     (100
-                        // (option1 + 1 + option2)
+                        // (option1 + option2 + 1)
                         * (if answered == 1 then
                             option1 + 1
                            else
@@ -130,7 +139,7 @@ printQuestion maybeQuestion maybeStatistics answered =
         RemoteData.Success question ->
             div [ class "question" ]
                 [ p [ class "option", AnswerQuestion question.id 1 |> onClick ]
-                    [ text question.option1
+                    [ a [] [ text question.option1 ]
                     , if shouldPrintQuestionStatistics maybeQuestion maybeStatistics then
                         p [ class "statistics" ]
                             [ case maybeStatistics of
@@ -163,7 +172,7 @@ printQuestion maybeQuestion maybeStatistics answered =
                     ]
                 , p
                     [ class "option", AnswerQuestion question.id 2 |> onClick ]
-                    [ text question.option2
+                    [ a [] [ text question.option2 ]
                     , if shouldPrintQuestionStatistics maybeQuestion maybeStatistics then
                         p [ class "statistics" ]
                             [ case maybeStatistics of

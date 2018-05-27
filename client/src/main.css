@@ -102,6 +102,11 @@ body {
     content: ' - ';
 }
 
+.clickNote {
+    font-size: 12px;
+    display: block;
+}
+
 @media (min-width: 500px) {
     .question {
         flex-direction: row;

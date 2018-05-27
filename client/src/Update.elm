@@ -17,7 +17,7 @@ update msg model =
             )
 
         FetchRandomQuestion ->
-            ( model
+            ( { model | answered = 0, message = "" }
             , Cmd.batch
                 [ fetchRandomQuestion model.userHash ]
             )
@@ -43,7 +43,7 @@ update msg model =
             )
 
         AnswerQuestion id option ->
-            ( model
+            ( { model | answered = option }
             , Cmd.batch
                 [ answerQuestion { id = id, option = option } model.userHash
                 , fetchStatistics id model.userHash
@@ -57,7 +57,7 @@ update msg model =
             )
 
         OnAddNewQuestion (Ok result) ->
-            ( { model | newQuestion = emptyQuestion }
+            ( { model | newQuestion = emptyQuestion, message = "Question submitted" }
             , Cmd.none
             )
 
