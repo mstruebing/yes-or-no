@@ -3,7 +3,7 @@ import {Pool} from 'pg';
 const query = async (text, values = null) => {
 	const pool = new Pool({
 		user: 'docker',
-		host: 'localhost',
+		host: 'db',
 		database: 'yes_or_no',
 		password: 'docker',
 		port: 5432

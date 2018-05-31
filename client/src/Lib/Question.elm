@@ -42,7 +42,7 @@ emptyQuestion =
 
 baseUrl : String
 baseUrl =
-    "http://localhost:3001"
+    "http://localhost:8081"
 
 
 emptyStatistic : Statistics
@@ -92,7 +92,7 @@ questionEncoder question =
         attributes =
             [ ( "id", Encode.int question.id ), ( "option1", Encode.string question.option1 ), ( "option2", Encode.string question.option2 ) ]
     in
-    Encode.object attributes
+        Encode.object attributes
 
 
 statisticsDecoder : Decode.Decoder Statistics
@@ -117,4 +117,4 @@ answerEncoder answer userHash =
         attributes =
             [ ( "id", Encode.int answer.id ), ( "option", Encode.int answer.option ), ( "userHash", Encode.string userHash ) ]
     in
-    Encode.object attributes
+        Encode.object attributes

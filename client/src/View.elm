@@ -47,7 +47,7 @@ printStatistics : WebData Count -> Html Msg
 printStatistics maybeCount =
     case maybeCount of
         RemoteData.Success count ->
-            div [ class "statistics" ] [ text <| "users: " ++ toString count.users ++ " - questions: " ++ toString count.questions ++ " - answers: " ++ toString count.answers ]
+            div [ class "statistics" ] [ text <| "users: " ++ toString count.users ++ " questions: " ++ toString count.questions ++ " answers: " ++ toString count.answers ]
 
         _ ->
             text "Loading ..."
