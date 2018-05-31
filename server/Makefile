@@ -33,7 +33,7 @@ setup: check-requirements install build start
 ################################################################################
 
 
-start: 
+start:
 	nodemon --watch dist index.js
 
 # doesn't work fully as expected (rebuilding)
@@ -47,7 +47,7 @@ build-watch:
 
 
 build-production:
-	@echo TODO
+	babel src --out-dir dist --minified --presets=env --ignore test.js
 
 
 ################################################################################
