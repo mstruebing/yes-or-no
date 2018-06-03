@@ -71,3 +71,7 @@ lint-editorconfig:
 
 lint-fix:
 	xo --fix
+
+clean:
+	rm -Rf dist
+	rm -Rf node_modules
